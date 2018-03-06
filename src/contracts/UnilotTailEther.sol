@@ -5,7 +5,7 @@ import './abstract/BaseUnilotGame.sol';
 
 contract UnilotTailEther is BaseUnilotGame {
 
-    uint winnerIndex;
+    uint64 winnerIndex;
 
     //Public methods
     function UnilotTailEther(uint betAmount, address calculatorContractAddress)
@@ -48,17 +48,17 @@ contract UnilotTailEther is BaseUnilotGame {
         return (players, prizes);
     }
 
-    function play()
+    function ()
         public
         payable
         validBet
         onlyPlayer
     {
         require(tickets[msg.sender].block_number == 0);
-        require(ticketIndex.length < 200);
+        require(ticketIndex.length <= 1000);
 
-        tickets[msg.sender].block_number = block.number;
-        tickets[msg.sender].block_time   = block.timestamp;
+        tickets[msg.sender].block_number = uint40(block.number);
+        tickets[msg.sender].block_time   = uint32(block.timestamp);
 
         ticketIndex.push(msg.sender);
 
@@ -70,12 +70,12 @@ contract UnilotTailEther is BaseUnilotGame {
         onlyAdministrator
         activeGame
     {
-        uint max_votes;
-        uint[] memory num_votes = new uint[](ticketIndex.length);
+        uint64 max_votes;
+        uint64[] memory num_votes = new uint64[](ticketIndex.length);
 
         for (uint i = 0; i < ticketIndex.length; i++) {
             TicketLib.Ticket memory ticket = tickets[ticketIndex[i]];
-            uint vote = ( ( ticket.block_number * ticket.block_time ) + uint( ticketIndex[i]) ) % ticketIndex.length;
+            uint64 vote = uint64( ( ( ticket.block_number * ticket.block_time ) + uint( ticketIndex[i]) ) % ticketIndex.length );
 
             num_votes[vote] += 1;
 

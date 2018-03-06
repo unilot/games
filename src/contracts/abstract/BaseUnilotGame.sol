@@ -58,18 +58,6 @@ contract BaseUnilotGame is Game {
 
     //Private methods
 
-
-    function ()
-        public
-        payable
-        validBet
-        onlyPlayer
-    {
-        play();
-    }
-
-    function play() public payable;
-
     function getState()
         public
         view
@@ -145,14 +133,14 @@ contract BaseUnilotGame is Game {
         returns(uint[] memory result)
     {
         var(numWinners, numFixedAmountWinners) = getNumWinners();
-        uint totalNumWinners = ( numWinners + numFixedAmountWinners );
+        uint16 totalNumWinners = uint16( numWinners + numFixedAmountWinners );
         result = new uint[]( totalNumWinners );
 
 
         uint[50] memory prizes = calculator.calcaultePrizes(
         bet, ticketIndex.length);
 
-        for (uint i = 0; i < totalNumWinners; i++) {
+        for (uint16 i = 0; i < totalNumWinners; i++) {
             result[i] = prizes[i];
         }
 
@@ -164,7 +152,7 @@ contract BaseUnilotGame is Game {
         onlyAdministrator
         activeGame
     {
-        for (uint i = 0; i < ticketIndex.length; i++) {
+        for (uint24 i = 0; i < ticketIndex.length; i++) {
             ticketIndex[i].transfer(bet);
         }
 

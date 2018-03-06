@@ -6,7 +6,6 @@ interface Game {
     event GameFinished(address winner);
 
     function () public payable;                                   //Participate in game. Proxy for play method
-    function play() public payable;                               //Participate in game.
     function getPrizeAmount() public constant returns (uint);     //Get potential or actual prize amount
     function getNumWinners() public constant returns(uint, uint);
     function getPlayers() public constant returns(address[]);           //Get full list of players

@@ -3,15 +3,16 @@ pragma solidity ^0.4.16;
 
 contract UnilotPrizeCalculator {
     //Calculation constants
-    uint  constant accuracy                   = 1000000000000000000;
-    uint  constant MAX_X_FOR_Y                = 195;  // 19.5
+    uint64  constant accuracy                   = 1000000000000000000;
+    uint8  constant MAX_X_FOR_Y                = 195;  // 19.5
 
-    uint  constant minPrizeCoeficent          = 1;
-    uint  constant percentOfWinners           = 5;    // 5%
-    uint  constant percentOfFixedPrizeWinners = 20;   // 20%
-    uint  constant gameCommision              = 20;   // 20%
-    uint  constant bonusGameCommision         = 5;    // 5%
-    uint  constant tokenHolerGameCommision    = 5;    // 5%
+    uint8  constant minPrizeCoeficent          = 1;
+    uint8  constant percentOfWinners           = 5;    // 5%
+    uint8  constant percentOfFixedPrizeWinners = 20;   // 20%
+
+    uint8  constant gameCommision              = 0;   // 0%
+    uint8  constant bonusGameCommision         = 0;   // 0%
+    uint8  constant tokenHolerGameCommision    = 0;    // 0%
     // End Calculation constants
 
     event Debug(uint);
@@ -35,15 +36,15 @@ contract UnilotPrizeCalculator {
     function getNumWinners(uint numPlayers)
         public
         pure
-        returns (uint numWinners, uint numFixedAmountWinners)
+        returns (uint16 numWinners, uint16 numFixedAmountWinners)
     {
         // Calculation is odd on purpose. It is a sort of ceiling effect to
         // maximize number of winners
-        uint totaNumlWinners = ( numPlayers - ( (numPlayers * ( 100 - percentOfWinners ) ) / 100 ) );
+        uint16 totaNumlWinners = uint16( numPlayers - ( (numPlayers * ( 100 - percentOfWinners ) ) / 100 ) );
 
 
-        numFixedAmountWinners = (totaNumlWinners * percentOfFixedPrizeWinners) / 100;
-        numWinners = totaNumlWinners - numFixedAmountWinners;
+        numFixedAmountWinners = uint16( (totaNumlWinners * percentOfFixedPrizeWinners) / 100 );
+        numWinners = uint16( totaNumlWinners - numFixedAmountWinners );
 
         return (numWinners, numFixedAmountWinners);
     }
