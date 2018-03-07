@@ -154,7 +154,6 @@ contract UnilotBonusTailToken is BaseUnilotGame {
 
         for ( i = 0; i < prizes.length; i++ ) {
             _prize[ticketIndex[lastId]] = prizes[i];
-            ticketIndex[lastId].transfer(prizes[i]);
 
             if ( lastId <= 0 ) {
                 lastId = ticketIndex.length;
